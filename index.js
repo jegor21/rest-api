@@ -1,5 +1,5 @@
 const express = require("express");
-const course = require("cors");
+const cors = require("cors");
 const { error } = require("console");
 const app = express();
 
@@ -65,5 +65,5 @@ app.put('/games', (req, res) => {
 
 // define the addres upon which the app is running
 app.listen(8080,() => {
-    console,log("API töötab aadressil: http//localhost:8080")
+    console.log("API töötab aadressil: http//localhost:8080")
 })

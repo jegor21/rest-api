@@ -1,69 +1,77 @@
-const express = require("express");
-const cors = require("cors");
-const { error } = require("console");
+const express = require('express');
+const cors = require('cors');
+const { type } = require('os');
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
 const games = [
-    { id: 1, name: "Super Mario Bros. Wonder"},
-    { id: 2, name: "Subnatutica"},
-    { id: 3, name: "Minecraft"},
+    {id: 1, name: "Super Mario Bros. Wonder"},
+    {id: 2, name: "Animal Crosing: New Horizons"},
+    {id: 3, name: "Seiklus"},
+
 ]
 
-// get method for any and all games in array
-app.get ('/games/id', (req, res) => {
+
+app.get('/games/', (req,res) => 
+{
     res.send(games)
 })
 
 
-// get method, returns one game from array, by id. If id doesnt exist
-// returns statuscode 404 - not found
-app.get('/games', (req, res) =>
+//get method, returns one game from array by id, if id doesnt exits returns 404
+
+app.get('/games/:id', (req, res) =>
 {
-    if (typeof games [req.param.id -1] === 'undefined')
+    if (typeof games[req.param.id - 1] === 'undefined')
     {
-        return res.status(404).send(
-            {error: "Game not found, game not gaming"});
+        return res.status(404).send({error: "Game not found"});
     }
-    res.send(games[req.params.id -1])
+    res.send(games[req.param.Id - 1])
 })
 
-// post method, adds a new game into the array. if parameters are missing
-// returns bad request - 400
+
+
 app.post('/games', (req, res) => {
     if (!req.body.name || !req.body.price) {
-        return res.status(400).send(
-            {error:"One or all params are missing"})
+        return res.status(404).send(
+            {error: "One or multiple paramaters missing"});
     }
     let newGame = {
-        id: games.lenght +1,
+        id: games.length +1,
         price: req.body.price,
         name: req.body.name
     }
     games.push(newGame)
     res.status(201).location('localhost:8080/games/'
-        +(games.length -1)).send(newGame)
+     + (games.length - 1)).send(newGame)
 })
 
-// delete method, deletes a game, where id is specified, if game is not found,
-// returns statuscode 404 - notfound. otherwise
-// returns succes 204 - no content
-app.delete('/games/:id', (req, res) => {
-    if (typeof games [req.params.id -1] === 'undefined') {
-        return res.status(404).send({error:"Game not found"})
+
+//deletes a game, where id is specified
+//if game isnt found returns 404
+//othwerise success 204 no content
+app.delete('/games/:id', (req, res) =>
+{
+    if(typeof games[req.params.id - 1] === 'undefined')
+    {
+        return res.status(404).send(
+            {error: 'Game not found, no gaming for you'})
     }
     games.splice(req.params.id -1, 1)
-    res.status(204).send({error:"No content"})
+    res.status(204).send({error: 'Content not contening (no content)'})
+
 })
 
-//
+//app.put
 app.put('/games', (req, res) => {
-    res.send("PUT request Called")
+    res.send("PUT Request ")
 })
 
-// define the addres upon which the app is running
-app.listen(8080,() => {
-    console.log("API töötab aadressil: http//localhost:8080")
-})
+app.listen(8080, () =>
+    console.log(`Api töötab aadressil: http://localhost:8080`)
+)
+
+
+//yy
